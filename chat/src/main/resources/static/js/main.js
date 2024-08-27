@@ -33,10 +33,10 @@ function connect(event) {
 
 
 function onConnected() {
-    // Subscribe to the Public Topic
+	// 1. '/topic/public'에 전송되는 메세지를 수신해준다.
     stompClient.subscribe('/topic/public', onMessageReceived);
 
-    // Tell your username to the server
+    // 2. ChatController의 Annotation으로 username이 JOIN했다고 알려준다.
     stompClient.send("/app/chat.addUser",
         {},
         JSON.stringify({sender: username, type: 'JOIN'})
@@ -69,7 +69,9 @@ function sendMessage(event) {
 
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
-
+	console.log("payload : ", payload);
+	console.log("payload.body", payload.body);
+	console.log("message", message);
     var messageElement = document.createElement('li');
 
     if(message.type === 'JOIN') {
@@ -82,6 +84,8 @@ function onMessageReceived(payload) {
         messageElement.classList.add('chat-message');
 
         var avatarElement = document.createElement('i');
+		
+		// Jeong이면 J, Park이면 P로 기본프로필 만들어줌.
         var avatarText = document.createTextNode(message.sender[0]);
         avatarElement.appendChild(avatarText);
         avatarElement.style['background-color'] = getAvatarColor(message.sender);
