@@ -22,12 +22,11 @@ public class WebSocketEventListener {
 	// 유저가 채팅방을 떠났을 때,
 	@EventListener
 	public void handleWebSocketDisConnectListener(SessionDisconnectEvent event) {
-		// TODO -- to be implemented
-		// test push
+		
 		StompHeaderAccessor headerAccesor = StompHeaderAccessor.wrap(event.getMessage());
 		String username = (String)headerAccesor.getSessionAttributes().get("username");
 		if(username != null) {
-			log.info("User disconnected: {}", username);
+			log.info("User Disconnected: {}", username);
 			ChatMessage chatMessage = ChatMessage.builder()
 										.type(MessageType.LEAVE)
 										.sender(username)
